@@ -1,6 +1,7 @@
 package data;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -13,11 +14,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.google.gson.reflect.TypeToken;
 
 import main.Ave;
 import main.Canido;
 import main.Felino;
-import main.ListaMascotas;
 import main.Mascota;
 import main.Roedor;
 
@@ -42,7 +43,7 @@ public class GsonHelper {
 	        map.put(Ave.class.getName(),Ave.class);
 	        map.put(Roedor.class.getName(),Roedor.class);
 	        
-	    }
+	    }  
 
 	
 	 /**
@@ -52,11 +53,13 @@ public class GsonHelper {
 	  * @param list
 	  * @return
 	  */
-	public static String listaMascotasToJson(ListaMascotas list){
+	
+	public static String listaMascotasToJson(ArrayList<Mascota> list){
 		GsonBuilder builder = new GsonBuilder(); 
-		builder.registerTypeAdapter(Mascota.class,new  MascotaSerializer()); 
+		builder.registerTypeAdapter(Mascota.class,new  MascotaSerializer());
+		Type typeToken = new TypeToken<ArrayList<Mascota>>(){}.getType();  
 		Gson gson = builder.create(); 
-		String strList = gson.toJson(list, ListaMascotas.class);	
+		String strList = gson.toJson(list, typeToken);	
 		return strList;
 	} 
 	
@@ -65,24 +68,29 @@ public class GsonHelper {
 	 * @param strJson
 	 * @return
 	 */
-	public static ListaMascotas jsonFromlistaMascotasToJson(String strJson){  
+	
+	public static ArrayList<Mascota> jsonFromArrayListMascotaToJson(String strJson){  
 		GsonBuilder builder = new GsonBuilder(); 
-		builder.registerTypeAdapter(Mascota.class,new  MascotaDeserializer()); 
+		builder.registerTypeAdapter(Mascota.class,new MascotaDeserializer()); 
 		Gson gson = builder.create(); 
-		ListaMascotas list = gson.fromJson(strJson,ListaMascotas.class); 
+		Type typeToken = new TypeToken<ArrayList<Mascota>>(){}.getType();  
+		ArrayList<Mascota> list = gson.fromJson(strJson,typeToken); 
 		return list;
 	}
 	
+	
 	private static class MascotaDeserializer implements JsonDeserializer<Mascota> {
+
 		@Override
-		public Mascota deserialize(JsonElement json, Type type, JsonDeserializationContext context)
-				throws JsonParseException {
-			   String typeClass = json.getAsJsonObject().get("typeClass").getAsString();
-	           Class clazz = map.get(typeClass);	           
-	           if (clazz  == null)
-	        	   throw new RuntimeException("No encuentra el miembro typeClass");                     
-	           return context.deserialize(json,clazz );
-		}	
+		public Mascota deserialize(JsonElement  json, Type type, JsonDeserializationContext context)				
+			throws JsonParseException {
+				   String typeClass = json.getAsJsonObject().get("typeClass").getAsString();
+		           Class clazz = map.get(typeClass);	           
+		           if (clazz  == null)
+		        	   throw new RuntimeException("No encuentra el miembro typeClass");                     
+		           return context.deserialize(json,clazz );
+		}
+		
 	}
 	
 	
