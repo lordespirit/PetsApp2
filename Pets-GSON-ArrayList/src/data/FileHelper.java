@@ -92,6 +92,7 @@ public class FileHelper {
 			
 			for (String strlist : list) {
 			    builder.append(list);
+			    builder.append("\n");
 			}
 
 			str = builder.toString();

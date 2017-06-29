@@ -93,11 +93,12 @@ public class FileHelper {
 		try {
 			List<String> list = readSmallTextFile(aFileName);
 			
-			for (String strlist : list) {
-			    builder.append(list);
+			for (String  strItem : list) {
+			    builder.append(strItem);
+			    builder.append("\n");
 			}
 
-			str = builder.toString();
+			str = builder.toString();	
 			
 		} catch (NoSuchFileException e) {
 		    
@@ -115,11 +116,15 @@ public class FileHelper {
 	public static boolean writeFileAsString(String str, String aFileName){
 		
 		boolean done = true;
-		ArrayList nuevaLista = new ArrayList();
-		nuevaLista.add(str);
+		ArrayList<String> nuevaLista = new ArrayList<String>();
 	
+		String[] values = str.split("\n");
+		for( String item: values)
+			nuevaLista.add(item);
+		
 		try {
 			writeSmallTextFile(nuevaLista,aFileName);
+			
 		} catch (IOException e) {
 			done = false;
 			System.err.println("Error");
