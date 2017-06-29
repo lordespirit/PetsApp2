@@ -2,45 +2,65 @@ package main;
 
 import java.util.ArrayList;
 
+import com.google.gson.GsonBuilder;
+
+import data.FileHelper;
 import data.GsonHelper;
 import util.Finder;
+import util.Input;
 
 public class PetsApp {
 
 	public static void main(String args[]){	
 		
-		String json = null; 
+		final String FILE = "veterinaria.txt";
+		String str = null; 
 		ArrayList<Mascota> list = null;
 		
-		try{
-			list = GsonHelper.jsonFromArrayListMascotaToJson(json); 
-		}catch (Exception e) {
-			list = new ArrayList<Mascota>();
-		}
-		
+		str = FileHelper.readFileAsString(FILE);
+		list = GsonHelper.jsonFromArrayListMascotaToJson(str); 
 		Finder<Mascota> finder = new Finder<Mascota>();
-		
-		// GsonHelper.listaMascotasToJson(list);
-		
-		/*
-		finder.find(list, patron, new ContainChecker() {
-			
-			@Override
-			public boolean containChecker(java.lang.Object object, java.lang.Object patron){
-				return null;
-			}
-			
-		})	; 
-		
-		 */
 		
 		String option = null;
 		UserInterface.showWelcome();
 		do{
+			UserInterface.showMenuInit();	
+			option = Input.scannLine().toLowerCase();
+			switch(option){
+				case "añadir":
+					Mascota newMascota = UserInterface.scanMascota();
+					UserInterface.addMascota(newMascota,list);
+					break;
+				case "listar":
+					UserInterface.listAllMascotas(list);
+					break;
+				case "eliminar":
+					UserInterface.removeFromIndexMascotas(list);
+					break;
+				case "editar":
+					UserInterface.editMascota(list);
+					break;
+				case "buscar":
+					break;
+				case "mascotas":
+					break;
+				case "propietarios":
+					break;
+				case "peso":
+					break;
+				case "salir":
+					System.out.println(" <******  GRACIAS POR USAR PETS APP V2.0  ******>");
+					break;
+				default:
+					System.out.println("Opción incorrecta. Vuelve a intentarlo.");
+					break;
+			}
 			
 			
 		}while(!option.equals("salir"));
 		
+		str = GsonHelper.listaMascotasToJson(list);
+		FileHelper.writeFileAsString(str, FILE);
 	}
 	
 	

@@ -1,0 +1,1 @@
+[{"calidadColmillo":1.0,"typeClass":"main.Canido","propietario":{"name":"Edu","surname":"Valles","phone":"00343545355","email":"edu@edu.com","address":"Av Madrid"},"nombre":"Rex","peso":30.0,"altura":1.12,"largo":1.13}]

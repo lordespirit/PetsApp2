@@ -1,4 +1,5 @@
-package data;
+
+package util;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -10,6 +11,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+
+import main.Mascota;
 
 
 public class FileHelper {
@@ -123,4 +126,6 @@ public class FileHelper {
 		}
 		return done;
 	}
+
+
 }
