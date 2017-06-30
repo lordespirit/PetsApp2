@@ -95,6 +95,25 @@ public abstract class Mascota {
 	public void setPropietario(Person propietario) {
 		this.propietario = propietario;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Mascota mascota = (Mascota) obj;
+		
+		if(this.getNombre().equals(mascota.getNombre())&&
+			this.getPeso()==mascota.getPeso()&&
+				this.getAltura()==mascota.getAltura()&&
+					this.getLargo()==mascota.getLargo()&&
+						this.getPropietario().getFullName().equals(mascota.getPropietario().getFullName())&&
+							this.getPropietario().getAddress().equals(mascota.getPropietario().getAddress())&&
+								this.getPropietario().getEmail().equals(mascota.getPropietario().getEmail())&&
+									this.getPropietario().getPhone().equals(mascota.getPropietario().getPhone())
+				){
+			return true;
+		}else{
+			return false;
+		}
+	}
 
 }
 

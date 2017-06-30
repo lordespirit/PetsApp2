@@ -2,9 +2,6 @@ package main;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-
-import org.junit.Assert;
-
 import data.GsonHelper;
 import util.Finder;
 import util.Input;
@@ -37,7 +34,7 @@ public class UserInterface {
 		System.out.print("> Escoge opción : ");
 	}
 	
-	public static Mascota scanMascota(){
+	public static Mascota scanMascota(ArrayList<Mascota> list){
 		String name;
 		String tipo;
 		float peso;	
@@ -125,14 +122,184 @@ public class UserInterface {
 	}
 	
 	
+	public static void showMenuEdit(){
+		System.out.println("**************** MENÚ EDICIÓN ****************");
+		System.out.println("Elije opción para listar");
+		System.out.println("> listar [todo]");
+		System.out.println("> mascota [busca por nombre de mascota]");
+		System.out.println("> propietario [busca por nombre de propietario]");
+
+	}
+	
+	public static String scanOptionEdit(ArrayList<Mascota> list) {
+		String option;
+		do{
+			System.out.print("Elige Opción : ");
+			option = Input.scannLine().toLowerCase();
+			if(!(option.equals("listar")||option.equals("mascota")||option.equals("propietario"))){
+				System.err.println("Error. Opción incorrecta");
+			}
+		}while(!(option.equals("listar")||option.equals("mascota")||option.equals("propietario")));
+		
+		return option;
+	}
+	
+	public static void editIndex(ArrayList<Mascota> list, int index){
+		
+		System.out.println("************************************************ Registro a editar ********************************************************");
+		System.out.println("Nombre: " +list.get(index).getNombre() + ", Peso: " + list.get(index).getPeso() +
+				", Altura: " + list.get(index).getAltura() + ", Largo: " + list.get(index).getLargo());
+		System.out.println("Propietario: " + list.get(index).getPropietario().getFullName() + ", " + list.get(index).getPropietario().getPhone() +
+		", " +list.get(index).getPropietario().getEmail() + ", " +list.get(index).getPropietario().getAddress());
+		System.out.println("***************************************************************************************************************************");
+		
+		String option;
+		do{
+		System.out.println("Deseas editar la mascota o el propietario? : ");
+		option = Input.scannLine().toLowerCase();
+		if(!(option.equals("mascota")||option.equals("propietario"))){
+			System.err.println("Error, opción no válida.");
+		}
+		}while(!(option.equals("mascota")||option.equals("propietario")));
+		
+		if(option.equals("mascota")){
+			String nombre;
+			String nombreRespaldo = list.get(index).getNombre();
+			Float peso;
+			Float pesoRespaldo = list.get(index).getPeso();	
+			Float altura;
+			Float alturaRespaldo= list.get(index).getAltura();
+			Float largo;
+			Float largoRespaldo = list.get(index).getLargo();
+			
+			System.out.println("********************** Edición de Mascota ***********************");
+			System.out.println("*****************************************************************");
+			System.out.println("Nombre: " +list.get(index).getNombre() + ", Peso: " + list.get(index).getPeso() +
+					", Altura: " + list.get(index).getAltura() + ", Largo: " + list.get(index).getLargo());
+			System.out.println("*****************************************************************");
+			
+			System.out.println(" [ Dejar en blanco si se desea conservar el dato ] ");
+			System.out.print("> Nuevo nombre de mascota: ");
+			nombre = Input.scannLine();
+			if(nombre.equals(""))
+				nombre = nombreRespaldo;
+			
+			String editar;
+			System.out.print("> ¿Editar peso? [Dejar en blanco para conservar antiguo dato] ");
+			editar = Input.scannLine();
+			if(editar.equals("")||editar.toLowerCase().toCharArray()[0]=='n'){
+				peso = pesoRespaldo;
+			}else{
+				System.out.print("> Nuevo peso de mascota: ");
+				peso = Input.scannFloat();
+			}
+			
+			System.out.print("> ¿Editar altura? [Dejar en blanco para conservar antiguo dato] ");
+			editar = Input.scannLine();
+			if(editar.equals("")||editar.toLowerCase().toCharArray()[0]=='n'){
+				altura = alturaRespaldo;
+			}else{
+				System.out.print("> Nueva altura de mascota: ");
+				altura = Input.scannFloat();
+			}
+			
+			System.out.print("> ¿Editar largo? [Dejar en blanco para conservar antiguo dato] ");
+			editar = Input.scannLine();
+			if(editar.equals("")||editar.toLowerCase().toCharArray()[0]=='n'){
+				largo = largoRespaldo;
+			}else{
+				System.out.print("> Nuevo largo de mascota: ");
+				largo = Input.scannFloat();
+			}
+				
+			list.get(index).setNombre(nombre);
+			list.get(index).setAltura(altura);
+			list.get(index).setLargo(largo);
+			list.get(index).setPeso(peso);
+			
+			System.out.println("********************* Cambios realizados correctamente *********************");
+			System.out.println("Nombre: " +list.get(index).getNombre() + ", Peso: " + list.get(index).getPeso() +
+					", Altura: " + list.get(index).getAltura() + ", Largo: " + list.get(index).getLargo());
+			System.out.println("****************************************************************************");
+			
+		}else{
+			
+			String nombreRespaldo = list.get(index).getPropietario().getName();
+			String apellidoRespaldo = list.get(index).getPropietario().getSurname();
+			String telefonoRespaldo = list.get(index).getPropietario().getPhone();
+			String eMailRespaldo = list.get(index).getPropietario().getEmail();
+			String addressRespaldo = list.get(index).getPropietario().getAddress();
+			String nombre;
+			String apellido;
+			String telefono;
+			String eMail;
+			String address;
+			
+			System.out.println("***************************** Edición de Propietario ******************************");
+			System.out.println("***********************************************************************************");
+			System.out.println("Nombre: " +list.get(index).getPropietario().getFullName() + ", Telefono: " + list.get(index).getPropietario().getPhone() +
+					", Correo: " + list.get(index).getPropietario().getEmail() + ", Dirección: " + list.get(index).getPropietario().getAddress());
+			System.out.println("***********************************************************************************");
+			System.out.println(" [ Dejar en blanco si se desea conservar el dato ] ");
+			System.out.print("> Nuevo nombre de propietario: ");
+			nombre = Input.scannLine();
+			System.out.print("> Nuevo apellido de propietario: ");
+			apellido = Input.scannLine();
+			
+			do{
+				System.out.print("> Nuevo teléfono de propietario: ");
+				telefono = Input.scannLine();
+				if(telefono.equals(""))
+					telefono = telefonoRespaldo;
+				if(!phoneValidator(telefono)){
+					System.out.println("Formato teléfono incorrecto\n"
+							+ "Formato : únicamente números - Mínimo 9 cifras - Máximo 13");
+				}
+			}while(!phoneValidator(telefono));
+			
+			do{
+				System.out.print("> Nuevo correo electrónico de propietario: ");
+				eMail = Input.scannLine();
+				if(eMail.equals(""))
+					eMail = eMailRespaldo;
+				if(!mailValidator(eMail)){
+					System.out.println("El correo no está en formato correcto...");
+				}
+			}while(!mailValidator(eMail));
+			
+			System.out.print("> Nueva dirección de propietario: ");
+			address = Input.scannLine();
+			
+			if(nombre.equals(""))
+				nombre  = nombreRespaldo;
+			if(apellido.equals(""))
+				apellido = apellidoRespaldo;
+			if(address.equals(""))
+				address = addressRespaldo;
+			
+			list.get(index).getPropietario().setName(nombre);
+			list.get(index).getPropietario().setSurname(apellido);
+			list.get(index).getPropietario().setAddress(address);
+			list.get(index).getPropietario().setEmail(eMail);
+			list.get(index).getPropietario().setPhone(telefono);
+			
+			System.out.println("******************************** Cambios realizados correctamente **********************************");
+			System.out.println("Nombre: " +list.get(index).getPropietario().getFullName() + ", Telefono: " + list.get(index).getPropietario().getPhone() +
+					", Correo: " + list.get(index).getPropietario().getEmail() + ", Dirección: " + list.get(index).getPropietario().getAddress());
+			System.out.println("***************************************************************************************************");
+			
+		}
+	}
+	
 	// TODO EDITAR MASCOTA O PROPIETARIO
-	public static void editMascota(ArrayList<Mascota> list){
+	public static void editMascotaListAll(ArrayList<Mascota> list){
 		
 		if(list.size()==0){
 			System.err.println("Lista vacía. No se encuentra resultados");
 		}else{
-			System.out.println("**************** MENÚ EDICIÓN ****************");
+			
 			int index;
+			System.out.println("********************* Menú edición por listado completo *********************");
 			do{
 				System.out.println("Escoge un índice a editar : ");
 				listAllMascotas(list);
@@ -141,153 +308,65 @@ public class UserInterface {
 					System.err.println("Posición no válida.");
 				}
 			}while(index<1||index>list.size());
-			
-			index--;
-			
-			System.out.println("************************************************ Registro a editar ********************************************************");
-			System.out.println("Nombre: " +list.get(index).getNombre() + ", Peso: " + list.get(index).getPeso() +
-					", Altura: " + list.get(index).getAltura() + ", Largo: " + list.get(index).getLargo());
-			System.out.println("Propietario: " + list.get(index).getPropietario().getFullName() + ", " + list.get(index).getPropietario().getPhone() +
-			", " +list.get(index).getPropietario().getEmail() + ", " +list.get(index).getPropietario().getAddress());
-			System.out.println("***************************************************************************************************************************");
-			
-			String option;
-			do{
-			System.out.println("Deseas editar la mascota o el propietario? : ");
-			option = Input.scannLine().toLowerCase();
-			if(!(option.equals("mascota")||option.equals("propietario"))){
-				System.err.println("Error, opción no válida.");
-			}
-			}while(!(option.equals("mascota")||option.equals("propietario")));
-			
-			if(option.equals("mascota")){
-				String nombre;
-				String nombreRespaldo = list.get(index).getNombre();
-				Float peso;
-				Float pesoRespaldo = list.get(index).getPeso();	
-				Float altura;
-				Float alturaRespaldo= list.get(index).getAltura();
-				Float largo;
-				Float largoRespaldo = list.get(index).getLargo();
-				
-				System.out.println("********************** Edición de Mascota ***********************");
-				System.out.println("*****************************************************************");
-				System.out.println("Nombre: " +list.get(index).getNombre() + ", Peso: " + list.get(index).getPeso() +
-						", Altura: " + list.get(index).getAltura() + ", Largo: " + list.get(index).getLargo());
-				System.out.println("*****************************************************************");
-				
-				System.out.println(" [ Dejar en blanco si se desea conservar el dato ] ");
-				System.out.print("> Nuevo nombre de mascota: ");
-				nombre = Input.scannLine();
-				if(nombre.equals(""))
-					nombre = nombreRespaldo;
-				
-				String editar;
-				System.out.print("> ¿Editar peso? [Dejar en blanco para conservar antiguo dato] ");
-				editar = Input.scannLine();
-				if(editar.equals("")||editar.toLowerCase().toCharArray()[0]=='n'){
-					peso = pesoRespaldo;
-				}else{
-					System.out.print("> Nuevo peso de mascota: ");
-					peso = Input.scannFloat();
-				}
-				
-				System.out.print("> ¿Editar altura? [Dejar en blanco para conservar antiguo dato] ");
-				editar = Input.scannLine();
-				if(editar.equals("")||editar.toLowerCase().toCharArray()[0]=='n'){
-					altura = alturaRespaldo;
-				}else{
-					System.out.print("> Nueva altura de mascota: ");
-					altura = Input.scannFloat();
-				}
-				
-				System.out.print("> ¿Editar largo? [Dejar en blanco para conservar antiguo dato] ");
-				editar = Input.scannLine();
-				if(editar.equals("")||editar.toLowerCase().toCharArray()[0]=='n'){
-					largo = largoRespaldo;
-				}else{
-					System.out.print("> Nuevo largo de mascota: ");
-					largo = Input.scannFloat();
-				}
-					
-				list.get(index).setNombre(nombre);
-				list.get(index).setAltura(altura);
-				list.get(index).setLargo(largo);
-				list.get(index).setPeso(peso);
-				
-				System.out.println("********************* Cambios realizados correctamente *********************");
-				System.out.println("Nombre: " +list.get(index).getNombre() + ", Peso: " + list.get(index).getPeso() +
-						", Altura: " + list.get(index).getAltura() + ", Largo: " + list.get(index).getLargo());
-				System.out.println("****************************************************************************");
-				
+			editIndex(list, --index);
+		}
+	}
+	
+	public static void editByMascotaNombre(ArrayList<Mascota> list) {
+		
+		if(list.size()==0){
+			System.err.println("Lista vacía. No se encuentra resultados");
+		}else{
+
+			System.out.println("********************* Menú edición por búsqueda de Mascota por nombre *********************");
+			String nombreMascota = scanNombreMascota();
+			ArrayList<Mascota> listadoDeBusqueda= searchNameMascota(list, nombreMascota);
+			if(listadoDeBusqueda==null){
+				System.err.println("No se encontraron resultados");
+			}else if(listadoDeBusqueda.size()==1){
+				editIndex(listadoDeBusqueda,0);
 			}else{
-				
-				String nombreRespaldo = list.get(index).getPropietario().getName();
-				String apellidoRespaldo = list.get(index).getPropietario().getSurname();
-				String telefonoRespaldo = list.get(index).getPropietario().getPhone();
-				String eMailRespaldo = list.get(index).getPropietario().getEmail();
-				String addressRespaldo = list.get(index).getPropietario().getAddress();
-				String nombre;
-				String apellido;
-				String telefono;
-				String eMail;
-				String address;
-				
-				System.out.println("***************************** Edición de Propietario ******************************");
-				System.out.println("***********************************************************************************");
-				System.out.println("Nombre: " +list.get(index).getPropietario().getFullName() + ", Telefono: " + list.get(index).getPropietario().getPhone() +
-						", Correo: " + list.get(index).getPropietario().getEmail() + ", Dirección: " + list.get(index).getPropietario().getAddress());
-				System.out.println("***********************************************************************************");
-				System.out.println(" [ Dejar en blanco si se desea conservar el dato ] ");
-				System.out.print("> Nuevo nombre de propietario: ");
-				nombre = Input.scannLine();
-				System.out.print("> Nuevo apellido de propietario: ");
-				apellido = Input.scannLine();
-				
+				int index;
 				do{
-					System.out.print("> Nuevo teléfono de propietario: ");
-					telefono = Input.scannLine();
-					if(telefono.equals(""))
-						telefono = telefonoRespaldo;
-					if(!phoneValidator(telefono)){
-						System.out.println("Formato teléfono incorrecto\n"
-								+ "Formato : únicamente números - Mínimo 9 cifras - Máximo 13");
+					listAllMascotas(listadoDeBusqueda);
+					System.out.println("Selecciona el índice a editar");
+					index = Input.scannInt();
+					if(index<1||index>listadoDeBusqueda.size()){
+						System.err.println("Error, índice incorrecto.");
 					}
-				}while(!phoneValidator(telefono));
-				
-				do{
-					System.out.print("> Nuevo correo electrónico de propietario: ");
-					eMail = Input.scannLine();
-					if(eMail.equals(""))
-						eMail = eMailRespaldo;
-					if(!mailValidator(eMail)){
-						System.out.println("El correo no está en formato correcto...");
-					}
-				}while(!mailValidator(eMail));
-				
-				System.out.print("> Nueva dirección de propietario: ");
-				address = Input.scannLine();
-				
-				if(nombre.equals(""))
-					nombre  = nombreRespaldo;
-				if(apellido.equals(""))
-					apellido = apellidoRespaldo;
-				if(address.equals(""))
-					address = addressRespaldo;
-				
-				list.get(index).getPropietario().setName(nombre);
-				list.get(index).getPropietario().setSurname(apellido);
-				list.get(index).getPropietario().setAddress(address);
-				list.get(index).getPropietario().setEmail(eMail);
-				list.get(index).getPropietario().setPhone(telefono);
-				
-				System.out.println("******************************** Cambios realizados correctamente **********************************");
-				System.out.println("Nombre: " +list.get(index).getPropietario().getFullName() + ", Telefono: " + list.get(index).getPropietario().getPhone() +
-						", Correo: " + list.get(index).getPropietario().getEmail() + ", Dirección: " + list.get(index).getPropietario().getAddress());
-				System.out.println("***************************************************************************************************");
-				
+				}while(index<1||index>listadoDeBusqueda.size());
+				editIndex(listadoDeBusqueda,--index);
 			}
 		}
+	}
+	
+	public static void editByPropietarioNombre(ArrayList<Mascota> list) {
+		
+		if(list.size()==0){
+			System.err.println("Lista vacía. No se encuentra resultados");
+		}else{
+			
+			System.out.println("********************* Menú edición por búsqueda de Propietario por nombre *********************");
+			String nombrePropietario = scanNombrePropietario();
+			ArrayList<Mascota> listadoDeBusqueda= searchNamePropietario(list, nombrePropietario);
+			if(listadoDeBusqueda==null){
+				System.err.println("No se encontraron resultados");
+			}else if(listadoDeBusqueda.size()==1){
+				editIndex(listadoDeBusqueda,0);
+			}else{
+				int index;
+				do{
+					listAllMascotas(listadoDeBusqueda);
+					System.out.println("Selecciona el índice a editar");
+					index = Input.scannInt();
+					if(index<1||index>listadoDeBusqueda.size()){
+						System.err.println("Error, índice incorrecto.");
+					}
+				}while(index<1||index>listadoDeBusqueda.size());
+				editIndex(listadoDeBusqueda,--index);
+			}
+		}
+		
 	}
 
 	
@@ -345,12 +424,12 @@ public class UserInterface {
 			System.out.println("*******************************************");
 			do{
 				System.out.print("Introduce el índice a eliminar : ");
-				index  = Input.scannInt() -1;
-				if(index<0||index>list.size()){
+				index  = Input.scannInt();
+				if(index<1||index>list.size()){
 					System.out.println("Error, índice incorrecto, vuelve a probar");
 				}
-			}while(index<0||index>list.size());
-		removeMascota(index, list);
+			}while(index<1||index>list.size());
+		removeMascota(--index, list);
 		}
 	}
 	
@@ -439,7 +518,6 @@ public class UserInterface {
 				}while(name.equals(""));
 				
 				return searchNameMascota(list, name);
-				
 			}
 	}
 
@@ -456,6 +534,42 @@ public class UserInterface {
 		);
 		
 		return listaOrdenadaNombreMascota;
+	}
+	
+	public static ArrayList<Mascota> sortMascotasByPropietarios(ArrayList<Mascota> list) {
+		ArrayList<Mascota> listaOrdenadaNombrePropietario =  list;
+		listaOrdenadaNombrePropietario.sort
+		(new Comparator<Mascota>() 
+			{
+				// AQUÍ ESTA LA DEFINICIÓN DE ESTA CLASE ANONIMA
+				public int compare(Mascota o1, Mascota o2) {
+					return o1.getPropietario().getFullName().toLowerCase().compareTo(o2.getPropietario().getFullName().toLowerCase());	
+				}
+			}
+		);
+		
+		return listaOrdenadaNombrePropietario;
+	}
+
+	public static ArrayList<Mascota> sortMascotasByPeso(ArrayList<Mascota> list) {
+		ArrayList<Mascota> listaOrdenadaPesoMascota =  list;
+		listaOrdenadaPesoMascota.sort
+		(new Comparator<Mascota>() 
+			{
+				// AQUÍ ESTA LA DEFINICIÓN DE ESTA CLASE ANONIMA
+				public int compare(Mascota o1, Mascota o2) {
+					int r = 0;
+					if(o1.getPeso()<o2.getPeso()){
+						r = 1;
+					}else if(o1.getPeso()>o2.getPeso()){
+						r = -1;
+					}
+					return r;
+				}
+			}
+		);
+		
+		return listaOrdenadaPesoMascota;
 	}
 
 	public static ArrayList<Mascota> showMenuTipos(ArrayList<Mascota> list) {
@@ -477,7 +591,6 @@ public class UserInterface {
 			ArrayList<Mascota> resultList = finder.find(list, patron , new Finder.ContainChecker<Mascota>() {
 				@Override
 				public boolean containChecker(Mascota mascota, Object patron) {
-					String str = (String) patron;
 					return mascota.getClass().getSimpleName().contains((CharSequence) patron);
 				}	
 			});
@@ -512,6 +625,5 @@ public class UserInterface {
 		}
 		
 	}
-	
 	
 }

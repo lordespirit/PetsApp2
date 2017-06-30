@@ -28,7 +28,7 @@ public class PetsApp {
 			option = Input.scannLine().toLowerCase();
 			switch(option){
 				case "añadir":
-					Mascota newMascota = UserInterface.scanMascota();
+					Mascota newMascota = UserInterface.scanMascota(list);
 					UserInterface.addMascota(newMascota,list);
 					break;
 				case "listar":
@@ -38,7 +38,15 @@ public class PetsApp {
 					UserInterface.removeFromIndexMascotas(list);
 					break;
 				case "editar":
-					UserInterface.editMascota(list);
+					UserInterface.showMenuEdit();
+					String optionEdit = UserInterface.scanOptionEdit(list);
+					if(optionEdit.equals("listar")){
+						UserInterface.editMascotaListAll(list);
+					}else if(optionEdit.equals("mascota")){
+						UserInterface.editByMascotaNombre(list);
+					}else{
+						UserInterface.editByPropietarioNombre(list);
+					}
 					break;
 				case "buscar":
 					UserInterface.listAllMascotas(UserInterface.showMenuBuscar(list));
@@ -47,11 +55,13 @@ public class PetsApp {
 					UserInterface.listAllMascotas(UserInterface.sortMascotasByName(list));
 					break;
 				case "propietarios":
+					UserInterface.listAllMascotas(UserInterface.sortMascotasByPropietarios(list));
 					break;
 				case "clases":
 					UserInterface.listAllMascotas(UserInterface.showMenuTipos(list));
 					break;
 				case "peso":
+					UserInterface.listAllMascotas(UserInterface.sortMascotasByPeso(list));
 					break;
 				case "salir":
 					System.out.println(" <******  GRACIAS POR USAR PETS APP V2.0  ******>");
