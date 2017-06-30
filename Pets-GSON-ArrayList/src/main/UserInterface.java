@@ -18,11 +18,11 @@ public class UserInterface {
 	public static void showMenuInit(){
 		System.out.println("\n\nOpciones disponibles :");
 		System.out.println("> Añadir [añade mascota]");
-		System.out.println("> Eliminar [dar de alta una mascota]");
+		System.out.println("> Eliminar [dar de alta una mascota - listar todo, nombre mascota o nombre propietario]");
 		System.out.println("> Listar [lista todas las mascotas mascota]");
-		System.out.println("> Buscar [busca mascotas por nombre mascota o por propietario]");
+		System.out.println("> Buscar [busca mascotas por nombre mascota o nombre propietario o email]");
 		System.out.println("> clases [busca mascotas por clases de animal]");
-		System.out.println("> Editar [edita una mascota - se puede buscar por propietario o nombre de mascota]");
+		System.out.println("> Editar [edita una mascota - listar todo, nombre mascota o nombre propietario]");
 		System.out.println("> Mascotas [lista y ordena por nombre de mascotas]");
 		System.out.println("> Propietarios [lista y ordena por nombre de propietarios]");
 		System.out.println("> Peso [lista y ordena por peso de mascotas]");
