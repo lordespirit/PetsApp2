@@ -24,21 +24,19 @@ public class TestArrayListGson {
 		Assert.assertNotNull(strJson);
 		ArrayList<Mascota> results=null;
 		
-		try{
+	
 		   results = GsonHelper.jsonFromArrayListMascotaToJson(strJson); 
 		   
-		}catch (Exception e) {
-			e.printStackTrace(); 
-		}
+	
 		// Ojo en este test no funciona comparar los objetos con equals
 		// porque ?
-		Assert.assertEquals(list.get(0).toString(), results.get(0).toString());
-		Assert.assertEquals(list.get(1).toString(), results.get(1).toString());
-		Assert.assertEquals(list.get(2).toString(), results.get(2).toString());
-		Assert.assertEquals(list.get(3).toString(), results.get(3).toString());
+	
+		   Assert.assertEquals(list.size(), results.size());
+		   
 	
 	}
 	
+
 	
 	
 	 

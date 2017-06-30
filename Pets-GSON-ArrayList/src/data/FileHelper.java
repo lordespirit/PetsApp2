@@ -90,8 +90,8 @@ public class FileHelper {
 		try {
 			List<String> list = readSmallTextFile(aFileName);
 			
-			for (String strlist : list) {
-			    builder.append(list);
+			for (String strItem : list) {
+			    builder.append(strItem);
 			    builder.append("\n");
 			}
 
