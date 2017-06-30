@@ -7,8 +7,6 @@ import util.Finder;
 import util.Input;
 
 public class UserInterface {
-
-	//list.contains(newMascota.getPropietario().getFullName().contains("Ed"));
 	
 	public static void showWelcome(){
 		System.out.println("**************************************");
@@ -533,6 +531,20 @@ public class UserInterface {
 		return resultListMascota;
 	}
 	
+public static ArrayList<Mascota> searchMailPropietario(ArrayList<Mascota> list, String name){
+		
+		Finder<Mascota> finder = new Finder<Mascota>();
+		ArrayList<Mascota> resultListMascota = finder.find(list, name , new Finder.ContainChecker<Mascota>() {
+			@Override
+			public boolean containChecker(Mascota mascota, Object patron) {
+				String str = (String) patron;
+				return mascota.getPropietario().getEmail().toLowerCase().contains(str);
+			}	
+		});
+		
+		return resultListMascota;
+	}
+	
 	public static ArrayList<Mascota> searchNamePropietario(ArrayList<Mascota> list, String name){
 		
 		Finder<Mascota> finder = new Finder<Mascota>();
@@ -579,6 +591,7 @@ public class UserInterface {
 			System.out.println("\n Puedes buscar por:");
 			System.out.println("> Mascota [por defecto]");
 			System.out.println("> Propietario");
+			System.out.println("> Mail [del propietario]");
 			System.out.print("Escoge opción : ");
 			option = Input.scannLine().toLowerCase();
 			if(option.equals("propietario")){
@@ -593,6 +606,17 @@ public class UserInterface {
 				
 				return searchNamePropietario(list, name);
 				
+			}else if(option.equals("mail")){
+				String email;
+				do{
+					System.out.print("Introduce correo electrónico o parte de él : ");
+					email = Input.scannLine().toLowerCase();
+					if(email.equals("")){
+						System.out.println("\nNo has introducido ningún valor");
+					}
+				}while(email.equals(""));
+				
+				return searchMailPropietario(list, email);
 			}else{
 				String name;
 				do{
