@@ -41,10 +41,15 @@ public class PetsApp {
 					UserInterface.editMascota(list);
 					break;
 				case "buscar":
+					UserInterface.listAllMascotas(UserInterface.showMenuBuscar(list));
 					break;
 				case "mascotas":
+					UserInterface.listAllMascotas(UserInterface.sortMascotasByName(list));
 					break;
 				case "propietarios":
+					break;
+				case "clases":
+					UserInterface.listAllMascotas(UserInterface.showMenuTipos(list));
 					break;
 				case "peso":
 					break;
