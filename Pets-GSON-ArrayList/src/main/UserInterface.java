@@ -117,21 +117,30 @@ public class UserInterface {
 		}else{
 			Ave newMascota = new Ave(name,peso,altura,largo);
 			newMascota.setPropietario(newPerson);
-			return newMascota;		}
-		
+			return newMascota;		
+		}
 	}
 	
 	
 	public static void showMenuEdit(){
 		System.out.println("**************** MENÚ EDICIÓN ****************");
-		System.out.println("Elije opción para listar");
+		System.out.println("Elije opción para editar");
 		System.out.println("> listar [todo]");
 		System.out.println("> mascota [busca por nombre de mascota]");
 		System.out.println("> propietario [busca por nombre de propietario]");
 
 	}
 	
-	public static String scanOptionEdit(ArrayList<Mascota> list) {
+	public static void showMenuDelete(){
+		System.out.println("**************** MENÚ ELIMINAR ****************");
+		System.out.println("Elije opción para eliminar");
+		System.out.println("> listar [todo]");
+		System.out.println("> mascota [busca por nombre de mascota]");
+		System.out.println("> propietario [busca por nombre de propietario]");
+
+	}
+	
+	public static String scanOption(ArrayList<Mascota> list) {
 		String option;
 		do{
 			System.out.print("Elige Opción : ");
@@ -291,7 +300,6 @@ public class UserInterface {
 		}
 	}
 	
-	// TODO EDITAR MASCOTA O PROPIETARIO
 	public static void editMascotaListAll(ArrayList<Mascota> list){
 		
 		if(list.size()==0){
@@ -309,6 +317,80 @@ public class UserInterface {
 				}
 			}while(index<1||index>list.size());
 			editIndex(list, --index);
+		}
+	}
+	
+	public static void deleteByMascotaNombre(ArrayList<Mascota> list) {
+		
+		if(list.size()==0){
+			System.err.println("Lista vacía. No se encuentra resultados");
+		}else{
+
+			System.out.println("********************* Menú eliminación por búsqueda de Mascota por nombre *********************");
+			String nombreMascota = scanNombreMascota();
+			ArrayList<Mascota> listadoDeBusqueda= searchNameMascota(list, nombreMascota);
+			if(listadoDeBusqueda==null){
+				System.err.println("No se encontraron resultados");
+			}else if(listadoDeBusqueda.size()==1){
+				String estasSeguro;
+				System.out.println("Nombre Mascota " + listadoDeBusqueda.get(0).getNombre() + " Tipo: " + listadoDeBusqueda.get(0).getClass().getSimpleName());
+				System.out.print("Estás seguro de querer borrarla? : ");
+				estasSeguro = Input.scannLine();
+				if(estasSeguro.toLowerCase().toCharArray()[0]=='s'){
+					removeMascota(0,listadoDeBusqueda);
+				}
+			}else{
+				int index;
+				do{
+					listAllMascotas(listadoDeBusqueda);
+					System.out.println("Hay varias coincidencias.");
+					System.out.print("Selecciona el número de índice a eliminar : ");
+					index = Input.scannInt();
+					if(index<1||index>listadoDeBusqueda.size()){
+						System.err.println("Error, índice incorrecto.");
+					}
+				}while(index<1||index>listadoDeBusqueda.size());
+				index--;
+				int indexReal = list.indexOf(listadoDeBusqueda.get(index));
+				removeMascota(indexReal,list);
+			}
+		}
+	}
+	
+	public static void deleteByPropietarioNombre(ArrayList<Mascota> list) {
+		
+		if(list.size()==0){
+			System.err.println("Lista vacía. No se encuentra resultados");
+		}else{
+
+			System.out.println("********************* Menú eliminación por búsqueda de Propietario por nombre *********************");
+			String nombrePropietario = scanNombreMascota();
+			ArrayList<Mascota> listadoDeBusqueda= searchNamePropietario(list, nombrePropietario);
+			if(listadoDeBusqueda==null){
+				System.err.println("No se encontraron resultados");
+			}else if(listadoDeBusqueda.size()==1){
+				String estasSeguro;
+				System.out.println("Nombre Mascota: " + listadoDeBusqueda.get(0).getNombre() + " Tipo: " + listadoDeBusqueda.get(0).getClass().getSimpleName());
+				System.out.print("Estás seguro de querer borrarla? : ");
+				estasSeguro = Input.scannLine();
+				if(estasSeguro.toLowerCase().toCharArray()[0]=='s'){
+					removeMascota(0,listadoDeBusqueda);
+				}
+			}else{
+				int index;
+				do{
+					listAllMascotas(listadoDeBusqueda);
+					System.out.println("Hay varias coincidencias.");
+					System.out.print("Selecciona el número de índice a eliminar : ");
+					index = Input.scannInt();
+					if(index<1||index>listadoDeBusqueda.size()){
+						System.err.println("Error, índice incorrecto.");
+					}
+				}while(index<1||index>listadoDeBusqueda.size());
+				index--;
+				int indexReal = list.indexOf(listadoDeBusqueda.get(index));
+				removeMascota(indexReal,list);
+			}
 		}
 	}
 	
@@ -335,7 +417,9 @@ public class UserInterface {
 						System.err.println("Error, índice incorrecto.");
 					}
 				}while(index<1||index>listadoDeBusqueda.size());
-				editIndex(listadoDeBusqueda,--index);
+				index--;
+				int indexReal = list.indexOf(listadoDeBusqueda.get(index));
+				editIndex(list,indexReal);
 			}
 		}
 	}
@@ -363,7 +447,9 @@ public class UserInterface {
 						System.err.println("Error, índice incorrecto.");
 					}
 				}while(index<1||index>listadoDeBusqueda.size());
-				editIndex(listadoDeBusqueda,--index);
+				index--;
+				int indexReal = list.indexOf(listadoDeBusqueda.get(index));
+				editIndex(list,indexReal);
 			}
 		}
 		
@@ -570,6 +656,27 @@ public class UserInterface {
 		);
 		
 		return listaOrdenadaPesoMascota;
+	}
+	
+	public static ArrayList<Mascota> sortMascotasByNutricion(ArrayList<Mascota> list) {
+		ArrayList<Mascota> listaOrdenadaNutricion =  list;
+		listaOrdenadaNutricion.sort
+		(new Comparator<Mascota>() 
+			{
+				// AQUÍ ESTA LA DEFINICIÓN DE ESTA CLASE ANONIMA
+				public int compare(Mascota o1, Mascota o2) {
+					int r = 0;
+					if(o1.getEstadoNutricion()<o2.getEstadoNutricion()){
+						r = 1;
+					}else if(o1.getEstadoNutricion()>o2.getEstadoNutricion()){
+						r = -1;
+					}
+					return r;
+				}
+			}
+		);
+		
+		return listaOrdenadaNutricion;
 	}
 
 	public static ArrayList<Mascota> showMenuTipos(ArrayList<Mascota> list) {
