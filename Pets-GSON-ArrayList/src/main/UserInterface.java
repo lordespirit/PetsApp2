@@ -2,11 +2,52 @@ package main;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Map;
+import java.util.TreeMap;
+
 import data.GsonHelper;
+import data.StringHelper;
 import util.Finder;
 import util.Input;
 
 public class UserInterface {
+	
+	private static final String[] ESPECIES = new String[]{"gato", "perro", "ave", "roedor"};
+		
+	static Map<String, Class> map = new TreeMap<String, Class>();
+	/** Adicione las clases que sea necesario */
+	 static {
+	        map.put(ESPECIES[0],Felino.class);
+	        map.put(ESPECIES[1],Canido.class);
+	        map.put(ESPECIES[2],Ave.class);
+	        map.put(ESPECIES[3],Roedor.class);
+	    } 
+	
+	 static Map<String, String> menu = new TreeMap<String, String>();
+		/** Adicione las clases que sea necesario */
+		 static {
+			 	menu.put("", "tecla 'Enter muestra ayuda");
+		        menu.put("-h","muestra esta ayuda");
+		        menu.put("-a","annade pet");
+		        menu.put("-l","lista de pets por nombre");
+		        menu.put("-son","busca pet por nombre propietario");
+		        menu.put("-soe","busca pet por email propietario");
+		        menu.put("-eon","edita pet por nombre propietario");
+		        menu.put("-eoe","edita pet por email propietario");
+		        menu.put("-r","borra pet");
+		        menu.put("exit","sal del programa\n");
+		    } 
+	
+	public interface CheckFormat{
+		boolean checkBadFormat(String str); 
+	}
+	
+	private static CheckFormat  checkFloat  =  new CheckFormat() {
+		@Override
+		public boolean checkBadFormat(String str) {
+			return str.equals("") || !StringHelper.isFloat(str); 
+		}
+}; 
 	
 	public static void showWelcome(){
 		System.out.println("**************************************");
@@ -38,6 +79,10 @@ public class UserInterface {
 		float peso;	
 		float altura;
 		float largo;
+		Canido newCanido = null;
+		Felino newFelino = null;
+		Roedor newRoedor = null;
+		Ave newAve = null;
 
 		do{
 			System.out.println("******* MASCOTA *******");
@@ -57,6 +102,60 @@ public class UserInterface {
 			altura = Input.scannFloat();
 			System.out.print("> Largo [formato metros ','] : ");
 			largo = Input.scannFloat();
+			
+			if(tipo.equals("canido")){
+				
+				newCanido = new Canido(name,peso,altura,largo);
+				float calidadColmillo;
+				do{
+					System.out.print("> Calidad de colmillo [formato de 0,0 a 1,0] : ");
+					calidadColmillo = Input.scannFloat();
+					if(calidadColmillo<0||calidadColmillo>1){
+						System.err.println("Calidad colmillo entre 0 y 1");
+					}
+				}while(calidadColmillo<0||calidadColmillo>1);
+				newCanido.setCalidadColmillo(calidadColmillo);
+				
+			}else if(tipo.equals("felino")){
+				
+				newFelino = new Felino(name,peso,altura,largo);
+				float calidadGarras;
+				do{
+					System.out.print("> Calidad de garras [formato de 0,0 a 1,0] : ");
+					calidadGarras = Input.scannFloat();
+					if(calidadGarras<0||calidadGarras>1){
+						System.err.println("Calidad garras entre 0 y 1");
+					}
+				}while(calidadGarras<0||calidadGarras>1);
+				newFelino.setCalidadGarras(calidadGarras);
+				
+			}else if(tipo.equals("roedor")){
+				
+				newRoedor = new Roedor(name,peso,altura,largo);
+				float calidadPelaje;
+				do{
+					System.out.print("> Calidad de pelaje [formato de 0,0 a 1,0] : ");
+					calidadPelaje = Input.scannFloat();
+					if(calidadPelaje<0||calidadPelaje>1){
+						System.err.println("Calidad pelaje entre 0 y 1");
+					}
+				}while(calidadPelaje<0||calidadPelaje>1);
+				newRoedor.setCalidadPelaje(calidadPelaje);
+				
+			}else{
+				
+				newAve = new Ave(name,peso,altura,largo);
+				float calidadPlumas;
+				do{
+					System.out.print("> Calidad de plumas [formato de 0,0 a 1,0] : ");
+					calidadPlumas = Input.scannFloat();
+					if(calidadPlumas<0||calidadPlumas>1){
+						System.err.println("Calidad plumas entre 0 y 1");
+					}
+				}while(calidadPlumas<0||calidadPlumas>1);
+				newAve.setCalidadPlumas(calidadPlumas);
+			}	
+			
 		}while(name.equals("")||peso<=0||altura<=0||largo<=0);
 		
 		String nombreProp;
@@ -98,24 +197,20 @@ public class UserInterface {
 		Person newPerson = new Person(nombreProp + " " + apellidoProp + ";" + telefono + ";" + eMail + ";" + address);
 		
 		if(tipo.equals("canido")){
-			Canido newMascota = new Canido(name,peso,altura,largo);
-			newMascota.setPropietario(newPerson);
-			return newMascota;
+			newCanido.setPropietario(newPerson);
+			return newCanido;
 			
 		}else if(tipo.equals("felino")){
-			Felino newMascota = new Felino(name,peso,altura,largo);
-			newMascota.setPropietario(newPerson);
-			return newMascota;
+			newFelino.setPropietario(newPerson);
+			return newFelino;
 			
 		}else if(tipo.equals("roedor")){
-			Roedor newMascota = new Roedor(name,peso,altura,largo);
-			newMascota.setPropietario(newPerson);
-			return newMascota;
+			newRoedor.setPropietario(newPerson);
+			return newRoedor;
 			
 		}else{
-			Ave newMascota = new Ave(name,peso,altura,largo);
-			newMascota.setPropietario(newPerson);
-			return newMascota;		
+			newAve.setPropietario(newPerson);
+			return newAve;		
 		}
 	}
 	
